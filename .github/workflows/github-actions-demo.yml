@@ -1,0 +1,25 @@
+name: Lint-and-tests
+#run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repository 
+        uses: actions/checkout@v4
+
+      - name: setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run EsLint 
+        run: npx eslint .
+
+      - name: Run Tests 
+        run: npm test

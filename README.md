@@ -1,2 +1,5 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/Hohlyandiya/frontend-project-11/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Hohlyandiya/frontend-project-11/actions)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e745ebf45c05b8b87732/maintainability)](https://codeclimate.com/github/Hohlyandiya/frontend-project-11/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e745ebf45c05b8b87732/test_coverage)](https://codeclimate.com/github/Hohlyandiya/frontend-project-11/test_coverage)
+[![Lint-and-tests](https://github.com/Hohlyandiya/frontend-project-11/actions/workflows/github-actions-demo.yml/badge.svg?branch=main&event=push)](https://github.com/Hohlyandiya/frontend-project-11/actions/workflows/github-actions-demo.yml)
