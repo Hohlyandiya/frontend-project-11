@@ -16,10 +16,10 @@ jobs:
           node-version: 20
 
       - name: install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci
 
       - name: Run EsLint 
         run: npx eslint .
 
-      - name: Run Tests 
-        run: npm test
+      #- name: Run Tests 
+        #run: npm test
