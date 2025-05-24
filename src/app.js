@@ -1,3 +1,3 @@
-import run from './components/UI/is-invaild'
+import validForm from './components/UI/is-invaild'
 
-run()
+validForm()

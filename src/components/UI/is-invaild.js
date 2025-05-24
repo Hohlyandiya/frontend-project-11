@@ -14,7 +14,7 @@ const validate = (fields) => {
   return promise
 }
 
-const run = () => {
+const validForm = () => {
   const elements = {
     urlInput: document.querySelector('#url-input'),
     formSubmit: document.querySelector('.rss-form'),
@@ -55,6 +55,6 @@ const run = () => {
   })
 }
 
-export default run
+export default validForm
 
 //https://lorem-rss.hexlet.app/feed
