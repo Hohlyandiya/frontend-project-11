@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "bootstrap": "^5.3.5"
+    "bootstrap": "^5.3.5",
+    "on-change": "^5.0.1",
+    "yup": "^1.6.1"
   },
   "name": "frontend-project-11",
   "version": "1.0.0",
