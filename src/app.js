@@ -1,3 +1,3 @@
-import validForm from './components/UI/is-invaild'
+import checkValidForm from './components/UI/validForm/validForm'
 
-validForm()
+checkValidForm()

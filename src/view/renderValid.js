@@ -1,6 +1,8 @@
-const renderValid = (urlInput, element) => {
+const renderValid = (urlInput, element, status) => {
   urlInput.classList.remove('is-invalid')
-  element.textContent = ''
+  element.classList.remove('text-danger')
+  element.classList.add('text-success')
+  element.textContent = status
 }
 
 export default renderValid
