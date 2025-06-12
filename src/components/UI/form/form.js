@@ -3,7 +3,10 @@ import onChange from 'on-change'
 import renderError from '../../../view/renderError'
 import renderValid from '../../../view/renderValid'
 import i18next from 'i18next'
-import resources from '../locales/index'
+import resources from '../../../locales/index'
+import requestRSS from '../../requestRSS/requestRSS'
+import buildFeed from '../buildFeed/buildFeed'
+import changesHistory from '../changeHistory/changesHistory'
 
 yup.setLocale({
   string: {
@@ -23,7 +26,6 @@ const validate = (fields) => {
 }
 
 const checkValidForm = () => {
-
   const defaultLanguage = 'ru'
 
   const i18nInstance = i18next.createInstance()
@@ -44,7 +46,7 @@ const checkValidForm = () => {
     form: {
       url: '',
     },
-    responses: {
+    statusFeedback: {
       errors: {
         errInvalid: 'form.errors.errInvalid',
         errRepeat: 'form.errors.errRepeat',
@@ -76,17 +78,20 @@ const checkValidForm = () => {
       resolve(response)
     })
       .then((response) => {
-        if (Object.hasOwn(state.responses.errors, response)) {
+        if (Object.hasOwn(state.statusFeedback.errors, response)) {
           throw new Error(response)
         }
         return response
       })
       .then((response) => {
-        state.activeStatus = state.responses.statusValid[response]
+        state.activeStatus = state.statusFeedback.statusValid[response]
         state.valid = true
+        return requestRSS(state.form.url)
       })
+      .then(response => buildFeed(response))
+      .then(buildFeed => changesHistory(buildFeed))
       .catch((response) => {
-        state.activeStatus = state.responses.errors[response.message]
+        state.activeStatus = state.statusFeedback.errors[response.message]
         state.valid = false
       })
   })

@@ -1,3 +1,5 @@
-import checkValidForm from './components/UI/validForm/validForm'
+import changesHistory from './components/UI/changeHistory/changesHistory'
+import form from './components/UI/form/form'
 
-checkValidForm()
+changesHistory()
+form()
