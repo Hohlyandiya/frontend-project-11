@@ -11,6 +11,7 @@ const renderPosts = (post) => {
   aFwBold.setAttribute('data-id', post.id)
   aFwBold.setAttribute('target', '_blank')
   aFwBold.setAttribute('rel', 'noopener noreferrer')
+  aFwBold.setAttribute('href', post.link)
   btn.setAttribute('data-id', post.id)
   btn.setAttribute('data-bs-toggle', 'modal')
   btn.setAttribute('data-bs-target', '#modal')

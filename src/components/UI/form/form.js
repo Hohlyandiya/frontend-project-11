@@ -51,20 +51,23 @@ const checkValidForm = () => {
         errInvalid: 'form.errors.errInvalid',
         errRepeat: 'form.errors.errRepeat',
         errInvalidRSS: 'form.errors.errInvalidRSS',
+        errNetwork: 'form.errors.errNetwork',
       },
       statusValid: {
         rssValid: 'form.rssValid',
       },
+      activeStatus: '',
     },
-    activeStatus: '',
+    feeds: [],
+    posts: [],
   }
 
   const state = onChange(initialState, () => {
     if (!state.valid) {
-      renderError(elements.urlInput, elements.feedback, i18nInstance.t(state.activeStatus))
+      renderError(elements.urlInput, elements.feedback, i18nInstance.t(state.statusFeedback.activeStatus))
       return
     }
-    renderValid(elements.urlInput, elements.feedback, i18nInstance.t(state.activeStatus))
+    renderValid(elements.urlInput, elements.feedback, i18nInstance.t(state.statusFeedback.activeStatus))
   })
 
   elements.urlInput.addEventListener('change', (e) => {
@@ -84,14 +87,31 @@ const checkValidForm = () => {
         return response
       })
       .then((response) => {
-        state.activeStatus = state.statusFeedback.statusValid[response]
+        state.statusFeedback.activeStatus = state.statusFeedback.statusValid[response]
         state.valid = true
         return requestRSS(state.form.url)
       })
-      .then(response => buildFeed(response))
-      .then(buildFeed => changesHistory(buildFeed))
+      .then((response) => {
+        if (response.code === 'ERR_NETWORK') {
+          throw new Error('errNetwork')
+        }
+        return buildFeed(response)
+      })
+      .then((buildFeed) => {
+        console.log(buildFeed)
+        const { feed, posts } = buildFeed
+        state.feeds = [...initialState.feeds, feed]
+        state.posts = [...initialState.posts, ...posts]
+      })
+      .then(() => {
+        const listFeedsAndPosts = {
+          feeds: state.feeds,
+          posts: state.posts,
+        }
+        changesHistory(listFeedsAndPosts)
+      })
       .catch((response) => {
-        state.activeStatus = state.statusFeedback.errors[response.message]
+        state.statusFeedback.activeStatus = state.statusFeedback.errors[response.message]
         state.valid = false
       })
   })

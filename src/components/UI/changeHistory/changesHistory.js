@@ -4,37 +4,17 @@ import rendertitlePosts from '../../../view/renderTitlePosts'
 import renderPosts from '../../../view/renderPosts'
 import renderTitleFeeds from '../../../view/renderTitleFeeds'
 
-const addNewFeed = (state, newFeed) => {
+export const changesHistory = (state) => {
   const { feeds, posts } = state
-  console.log('begin')
-  const test = [...feeds, ...newFeed.feed]
-  console.log(test)
-  posts = [posts, ...newFeed.posts]
-  return 0
-}
-
-const changesHistory = (newFeed) => {
-  const initialState = {
-    feeds: [],
-    posts: [],
+  if (feeds.length === 1) {
+    rendertitlePosts()
+    renderTitleFeeds()
   }
-
-  const state = onChange(initialState, () => {
-    const { feeds, posts } = state
-    if (feeds.length === 1) {
-      //rendertitlePosts()
-      renderTitleFeeds()
-    }
-    feeds.forEach(feed => renderFeeds(feed))
-    //posts.forEach(post => renderPosts(post))
-    return
-  })
-
-  console.log(state)
-
-  state.feeds = [...state.feeds, ...newFeed.feed]
-  //state.posts = [...state.feeds, ...newFeed.feed]
-  console.log(state)
+  const ulListGroup = document.querySelectorAll('.list-group')
+  ulListGroup.forEach(listGroup => listGroup.replaceChildren(''))
+  feeds.forEach(feed => renderFeeds(feed))
+  posts.forEach(post => renderPosts(post))
+  return
 }
 
 export default changesHistory

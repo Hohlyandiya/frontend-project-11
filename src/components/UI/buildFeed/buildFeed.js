@@ -1,6 +1,6 @@
 import { uniqueId } from 'lodash'
 
-const getTitleAndDescriptions = (element) => {
+const getData = (element) => {
   const beginContent = 9
   const endContent = -3
   const title = element.querySelector('title')
@@ -16,18 +16,20 @@ const getTitleAndDescriptions = (element) => {
 const getPosts = (treeRSS, idFeed) => {
   const items = treeRSS.querySelectorAll('item')
   const itemsArray = Array.from(items)
-  const listTitlesAndDescriptions = itemsArray.map((item) => {
+  const listDataPosts = itemsArray.map((item) => {
+    const link = item.querySelector('link').innerHTML
     const id = uniqueId()
-    const result = getTitleAndDescriptions(item)
-    return { id, idFeed, ...result }
+    const result = getData(item)
+    return { id, idFeed, link, ...result }
   })
-  return listTitlesAndDescriptions
+
+  return listDataPosts
 }
 
 const getFeed = (treeRSS) => {
   const id = uniqueId()
-  const result = getTitleAndDescriptions(treeRSS)
-  return [{ id, ...result }]
+  const result = getData(treeRSS)
+  return { id, ...result }
 }
 
 const buildFeed = (response) => {

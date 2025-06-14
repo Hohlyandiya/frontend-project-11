@@ -6,6 +6,7 @@ const requestRSS = (url) => {
       const tree = new DOMParser()
       return tree.parseFromString(response.data.contents, 'text/xml')
     })
+    .catch(e => e)
 }
 
 export default requestRSS
