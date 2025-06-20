@@ -1,5 +1,5 @@
 import { uniqueId } from 'lodash'
-import { addSubscriptionsContents, getNumberPosts } from '../model/registrationForm'
+import { addSubscriptionsContents } from '../model/registrationForm'
 
 const getData = (element) => {
   const beginContent = 9
@@ -14,7 +14,7 @@ const getData = (element) => {
   }
 }
 
-const getPosts = (treeRSS, idFeed) => {
+export const getPosts = (treeRSS, idFeed) => {
   const items = treeRSS.querySelectorAll('item')
   const itemsArray = Array.from(items)
   const listDataPosts = itemsArray.map((item) => {
@@ -23,7 +23,7 @@ const getPosts = (treeRSS, idFeed) => {
     const timeCreatePost = new Date(dateCreatePost).getTime()
     const id = uniqueId()
     const result = getData(item)
-    return { id, idFeed, link, timeCreatePost, ...result }
+    return { id, idFeed, link,  , ...result }
   })
 
   return listDataPosts
@@ -42,10 +42,7 @@ const buildSubscrip = (response, url) => {
     feed,
     posts,
   }
-  if (getNumberPosts() === 0) {
-    addSubscriptionsContents(result)
-    return
-  }
+  addSubscriptionsContents(result)
 }
 
 export default buildSubscrip

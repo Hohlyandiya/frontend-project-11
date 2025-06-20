@@ -118,9 +118,17 @@ export const getNumberPosts = () => defaultState.subscriptionsContents.posts.len
 
 export const addSubscriptionsContents = (subscriptionContents) => {
   const { feeds, posts } = defaultState.subscriptionsContents
-  defaultState.subscriptionsContents.feeds = [...feeds. subscriptionContents.feed]
-  defaultState.subscriptionsContents.posts = [...posts. subscriptionContents.posts]
+  defaultState.subscriptionsContents.feeds = [...feeds, subscriptionContents.feed]
+  defaultState.subscriptionsContents.posts = [...posts, ...subscriptionContents.posts]
 }
 
-export const setNewPost = (idFeed, newPost) => {
+export const getSubscriptionsContents = () => defaultState.subscriptionsContents
+
+export const addNewPost = (idFeed, newPost) => {
+  const { posts } = defaultState.subscriptionsContents
+  const postsFeed = posts
+    .filter(post => Object.hasOwn(post, idFeed))
+    .map(post => post.timeCreatePost)
+  const lastPost = Math.min(postsFeed)
+  console.log(lastPost)
 }

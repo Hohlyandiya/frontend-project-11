@@ -3,6 +3,7 @@ import renderFeeds from '../view/renderFeeds'
 import getDataRSSChanel from '../api/getDataRSSChanel'
 import parseData from '../helpers/parseData'
 import buildSubscrip from '../helpers/buildSubscrip'
+import { getSubscriptionsContents } from './registrationForm'
 
 const listbuildsSubscriptions = (listSubscriptions) => {
   const listbuildsSubscriptions = listSubscriptions
@@ -14,14 +15,12 @@ const listbuildsSubscriptions = (listSubscriptions) => {
 
 export const handleSubscriptions = (listSubscriptions) => {
   return listbuildsSubscriptions(listSubscriptions)
-    .then((result) => {
+    .then(() => {
+      const { feeds, posts } = getSubscriptionsContents()
       const ulListGroup = document.querySelectorAll('.list-group')
       ulListGroup.forEach(listGroup => listGroup.replaceChildren(''))
-      result.forEach((dataSubscriptions) => {
-        const { feed, posts } = dataSubscriptions
-        renderFeeds(feed)
-        posts.forEach(post => renderPosts(post))
-      })
+      feeds.forEach(feed => renderFeeds(feed))
+      posts.forEach(post => renderPosts(post))
     })
 }
 
