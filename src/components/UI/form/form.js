@@ -1,4 +1,4 @@
-import * as yup from 'yup'
+/* import * as yup from 'yup'
 import onChange from 'on-change'
 import renderError from '../../../view/renderError'
 import renderValid from '../../../view/renderValid'
@@ -7,6 +7,7 @@ import resources from '../../../locales/index'
 import requestRSS from '../../requestRSS/requestRSS'
 import buildFeed from '../buildFeed/buildFeed'
 import changesHistory from '../changeHistory/changesHistory'
+import updatePosts from '../changeHistory/updatePosts'
 
 yup.setLocale({
   string: {
@@ -95,10 +96,9 @@ const checkValidForm = () => {
         if (response.code === 'ERR_NETWORK') {
           throw new Error('errNetwork')
         }
-        return buildFeed(response)
+        return buildFeed(response, state.form.url)
       })
       .then((buildFeed) => {
-        console.log(buildFeed)
         const { feed, posts } = buildFeed
         state.feeds = [...initialState.feeds, feed]
         state.posts = [...initialState.posts, ...posts]
@@ -109,6 +109,7 @@ const checkValidForm = () => {
           posts: state.posts,
         }
         changesHistory(listFeedsAndPosts)
+        updatePosts(listFeedsAndPosts)
       })
       .catch((response) => {
         state.statusFeedback.activeStatus = state.statusFeedback.errors[response.message]
@@ -118,3 +119,4 @@ const checkValidForm = () => {
 }
 
 export default checkValidForm
+ */
