@@ -21,9 +21,9 @@ export const getPosts = (treeRSS, idFeed) => {
     const link = item.querySelector('link').innerHTML
     const dateCreatePost = item.querySelector('pubDate').textContent
     const timeCreatePost = new Date(dateCreatePost).getTime()
-    const id = uniqueId()
+    const isPostRead = false
     const result = getData(item)
-    return { id, idFeed, link,  , ...result }
+    return { idFeed, link, timeCreatePost, isPostRead, ...result }
   })
 
   return listDataPosts
@@ -35,9 +35,15 @@ const getFeed = (treeRSS, url) => {
   return { id, url, ...result }
 }
 
+const setId = (post) => {
+  const id = uniqueId()
+  return { id, ...post }
+}
+
 const buildSubscrip = (response, url) => {
   const feed = getFeed(response, url)
   const posts = getPosts(response, feed.id)
+    .map(post => setId(post))
   const result = {
     feed,
     posts,

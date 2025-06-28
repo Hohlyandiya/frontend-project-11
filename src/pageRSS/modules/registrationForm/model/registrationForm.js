@@ -8,6 +8,8 @@ import getDataRSSChanel from '../api/getDataRSSChanel'
 import updatePosts from '../helpers/updatePosts'
 import rendertitlePosts from '../view/renderTitlePosts'
 import renderTitleFeeds from '../view/renderTitleFeeds'
+import { addNewFeedAndPosts, listbuildsSubscriptions } from './postsAndFeeds'
+import { uniqueId, sortBy } from 'lodash'
 
 const schema = yup.object().shape({
   url: yup.string().url(),
@@ -92,12 +94,18 @@ const state = onChange(defaultState.fieldsForm, () => {
               rendertitlePosts()
               renderTitleFeeds()
             }
+            listbuildsSubscriptions(defaultState.subscriptionList)
+              .then(() => addNewFeedAndPosts())
             updatePosts(subscriptionList)
           })
         return
       }
       renderError(i18nInstance.t(feedbackStatus.errors.errInvalid))
     })
+})
+
+const subscriptionsContents = onChange(defaultState.subscriptionsContents, () => {
+  addNewFeedAndPosts()
 })
 
 export const getValidForm = () => defaultState.valid
@@ -124,11 +132,23 @@ export const addSubscriptionsContents = (subscriptionContents) => {
 
 export const getSubscriptionsContents = () => defaultState.subscriptionsContents
 
-export const addNewPost = (idFeed, newPost) => {
+export const addNewPost = (post) => {
   const { posts } = defaultState.subscriptionsContents
-  const postsFeed = posts
-    .filter(post => Object.hasOwn(post, idFeed))
-    .map(post => post.timeCreatePost)
-  const lastPost = Math.min(postsFeed)
-  console.log(lastPost)
+  const id = uniqueId()
+  const newPost = { id, ...post }
+  subscriptionsContents.posts = [newPost, ...posts]
+}
+
+export const getPost = (id) => {
+  const [targetPost] = subscriptionsContents.posts.filter(post => post.id === id)
+  return targetPost
+}
+
+export const setReadPost = (id) => {
+  const { posts } = defaultState.subscriptionsContents
+  const [targetPost] = posts.filter(post => post.id === id)
+  const restPosts = posts.filter(post => post.id !== id)
+  targetPost.isPostRead = true
+  const result = sortBy([targetPost, ...restPosts], 'timeCreatePost').reverse()
+  subscriptionsContents.posts = result
 }

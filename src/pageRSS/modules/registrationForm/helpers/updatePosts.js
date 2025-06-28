@@ -1,31 +1,40 @@
 import getDataRSSChanel from '../api/getDataRSSChanel'
-import handleSubscriptions from '../model/postsAndFeeds'
-import { getSubscriptionList, getSubscriptionsContents } from '../model/registrationForm'
+import { addNewPost, getSubscriptionList, getSubscriptionsContents } from '../model/registrationForm'
 import { getPosts } from './buildSubscrip'
 import parseData from './parseData'
 
-const findNewPost = (subscrip) => {
-  return getDataRSSChanel(subscrip)
+const getNewPosts = (url) => {
+  return getDataRSSChanel(url)
     .then((response) => {
-      const { feeds, posts } = getSubscriptionsContents()
+      const { feeds } = getSubscriptionsContents()
+      const [feed] = feeds.filter(feed => feed.url === url)
+      const idFeed = feed.id
       const parseDOM = parseData(response)
-      const test = getPosts()
-      console.log(parseDOM)
+      return getPosts(parseDOM, idFeed)
     })
 }
 
 const updatePosts = (subscriptionList) => {
-  const numberCurrentSubscriptions = getSubscriptionList().length
-  if (subscriptionList.length !== numberCurrentSubscriptions) {
-    return
-  }
-  const subscriptions = getSubscriptionList()
-  subscriptions.map((subscrip) => {
-    findNewPost(subscrip)
-  })
-
-  //handleSubscriptions(subscriptionList)
   setTimeout(() => {
+    const numberCurrentSubscriptions = getSubscriptionList().length
+    if (subscriptionList.length !== numberCurrentSubscriptions) {
+      return
+    }
+    const subscriptions = getSubscriptionList()
+    const allListPosts = subscriptions.map(url => getNewPosts(url))
+    Promise.all(allListPosts)
+      .then((result) => {
+        const { posts } = getSubscriptionsContents()
+        const [allPost] = result
+        const timeCreateNewPosts = allPost.map(post => post.timeCreatePost)
+        const lastNewPost = Math.max(...timeCreateNewPosts)
+        const timeCreatePosts = posts.map(post => post.timeCreatePost)
+        const lastPost = Math.max(...timeCreatePosts)
+        const [newPost] = allPost.filter(post => post.timeCreatePost === lastNewPost)
+        if (lastNewPost !== lastPost) {
+          addNewPost(newPost)
+        }
+      })
     updatePosts(subscriptionList)
   }, 5000)
 }

@@ -1,10 +1,17 @@
+import postController from '../controllers/post'
+
 const renderPosts = (post) => {
   const ulListGroup = document.querySelector('.posts .list-group')
   const liListGroupItem = document.createElement('li')
   const aFwBold = document.createElement('a')
   const btn = document.createElement('button')
   liListGroupItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0')
-  aFwBold.classList.add('fw-bold')
+  if (post.isPostRead) {
+    aFwBold.classList.add('fw-normal', 'link-secondary')
+  }
+  else {
+    aFwBold.classList.add('fw-bold')
+  }
   btn.classList.add('btn', 'btn-outline-primary', 'btn-sm')
   aFwBold.textContent = post.title
   btn.textContent = 'Просмотр'
@@ -18,6 +25,9 @@ const renderPosts = (post) => {
   liListGroupItem.appendChild(aFwBold)
   liListGroupItem.appendChild(btn)
   ulListGroup.appendChild(liListGroupItem)
+  postController()
 }
+
+
 
 export default renderPosts
