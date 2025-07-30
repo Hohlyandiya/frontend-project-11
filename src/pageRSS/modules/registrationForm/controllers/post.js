@@ -1,3 +1,5 @@
+// @ts-check
+
 import { getPost, setReadPost } from '../model/registrationForm'
 import renderModal from '../view/renderModal'
 
@@ -13,8 +15,7 @@ const post = () => {
     })
 
     btn.addEventListener('shown.bs.modal', () => {
-      const modal = document.querySelector('.modal')
-      modal.focus()
+      document.querySelector('.modal')
     })
   })
 }

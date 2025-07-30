@@ -1,3 +1,5 @@
+// @js-check
+
 import * as yup from 'yup'
 import onChange from 'on-change'
 import i18next from 'i18next'
@@ -18,7 +20,7 @@ const schema = yup.object().shape({
 const checkValidForm = (fieldsForm) => {
   return schema.validate(fieldsForm)
     .then(() => true)
-    .catch(e => false)
+    .catch(() => false)
 }
 
 const defaultLanguage = 'ru'
@@ -65,22 +67,24 @@ const checkUrl = (url) => {
       if (subscriptionList.includes(url)) {
         const textContent = i18nInstance.t(feedbackStatus.errors.errRepeat)
         renderError(textContent)
-        return
+        throw new Error()
+      }
+      if (response.code === 'ERR_NETWORK') {
+        const textContent = i18nInstance.t(feedbackStatus.errors.errNetwork)
+        renderError(textContent)
+        throw new Error()
       }
       if (response.data.status.http_code === 404) {
         const textContent = i18nInstance.t(feedbackStatus.errors.errInvalidRSS)
         renderError(textContent)
-        return
+        throw new Error()
       }
       const textContent = i18nInstance.t(feedbackStatus.statusValid.rssValid)
       defaultState.fieldsForm.url = ''
       addSubscription(url)
       renderValid(textContent)
     })
-    .catch((e) => {
-      const textContent = i18nInstance.t(feedbackStatus.errors.errNetwork)
-      renderError(textContent)
-    })
+    .catch()
 }
 
 const state = onChange(defaultState.fieldsForm, () => {
@@ -98,6 +102,7 @@ const state = onChange(defaultState.fieldsForm, () => {
               .then(() => addNewFeedAndPosts())
             updatePosts(subscriptionList)
           })
+          .catch()
         return
       }
       renderError(i18nInstance.t(feedbackStatus.errors.errInvalid))

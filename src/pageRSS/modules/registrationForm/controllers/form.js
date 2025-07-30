@@ -1,10 +1,11 @@
+// @js-check
+
 import { setUrlForm } from '../model/registrationForm'
 
 const registrationForm = () => {
   const elements = {
     urlForm: document.querySelector('#url-input'),
     submitForm: document.querySelector('.rss-form'),
-    feedback: document.querySelector('.feedback'),
   }
 
   let valueInput = ''

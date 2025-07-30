@@ -1,3 +1,5 @@
+// @ts-check
+
 import renderPosts from '../view/renderPosts'
 import renderFeeds from '../view/renderFeeds'
 import getDataRSSChanel from '../api/getDataRSSChanel'
