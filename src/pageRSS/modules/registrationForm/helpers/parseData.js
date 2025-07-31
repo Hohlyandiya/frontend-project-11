@@ -1,5 +1,3 @@
-// @ts-check
-
 const parseData = (data) => {
   const tree = new DOMParser()
   return tree.parseFromString(data.data.contents, 'text/xml')

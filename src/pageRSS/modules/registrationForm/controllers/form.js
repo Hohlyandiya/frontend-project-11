@@ -1,5 +1,3 @@
-// @js-check
-
 import { setUrlForm } from '../model/registrationForm'
 
 const registrationForm = () => {

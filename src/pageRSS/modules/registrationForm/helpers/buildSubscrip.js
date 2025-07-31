@@ -1,5 +1,3 @@
-// @ts-check
-
 import { uniqueId } from 'lodash'
 import { addSubscriptionsContents } from '../model/registrationForm'
 

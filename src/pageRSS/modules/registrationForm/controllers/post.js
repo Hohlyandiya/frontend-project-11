@@ -1,5 +1,3 @@
-// @ts-check
-
 import { getPost, setReadPost } from '../model/registrationForm'
 import renderModal from '../view/renderModal'
 

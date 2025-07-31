@@ -1,5 +1,3 @@
-// @js-check
-
 import getDataRSSChanel from '../api/getDataRSSChanel'
 import { addNewPost, getSubscriptionList, getSubscriptionsContents } from '../model/registrationForm'
 import { getPosts } from './buildSubscrip'
