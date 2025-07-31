@@ -66,13 +66,11 @@ const checkUrl = (url) => {
         const textContent = i18nInstance.t(feedbackStatus.errors.errRepeat)
         renderError(textContent)
         throw new Error()
-      }
-      if (response.code === 'ERR_NETWORK') {
+      } else if (response.code === 'ERR_NETWORK') {
         const textContent = i18nInstance.t(feedbackStatus.errors.errNetwork)
         renderError(textContent)
         throw new Error()
-      }
-      if (response.data.status.http_code === 404) {
+      } else if (response.data.status.http_code === 404) {
         const textContent = i18nInstance.t(feedbackStatus.errors.errInvalidRSS)
         renderError(textContent)
         throw new Error()
