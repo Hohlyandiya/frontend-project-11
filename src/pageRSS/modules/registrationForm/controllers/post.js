@@ -1,6 +1,5 @@
 import { getPost, setReadPost } from '../model/registrationForm'
 import renderModal from '../view/renderModal'
-import 'bootstrap'
 
 const post = () => {
   const btns = document.querySelectorAll('.btn-sm')
