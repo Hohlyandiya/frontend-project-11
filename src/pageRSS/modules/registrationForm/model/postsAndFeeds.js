@@ -20,5 +20,3 @@ export const addNewFeedAndPosts = () => {
   feeds.forEach(feed => renderFeeds(feed))
   posts.forEach(post => renderPosts(post))
 }
-
-export default addNewFeedAndPosts

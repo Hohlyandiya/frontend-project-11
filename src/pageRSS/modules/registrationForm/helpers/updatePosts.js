@@ -26,10 +26,8 @@ const updatePosts = (subscriptionList) => {
       .then((result) => {
         const { posts } = getSubscriptionsContents()
         const [allPost] = result
-        const timeCreateNewPosts = allPost.map(post => post.timeCreatePost)
-        const lastNewPost = Math.max(...timeCreateNewPosts)
-        const timeCreatePosts = posts.map(post => post.timeCreatePost)
-        const lastPost = Math.max(...timeCreatePosts)
+        const lastNewPost = Math.max(...allPost.map(post => post.timeCreatePost))
+        const lastPost = Math.max(...posts.map(post => post.timeCreatePost))
         const [newPost] = allPost.filter(post => post.timeCreatePost === lastNewPost)
         if (lastNewPost !== lastPost) {
           addNewPost(newPost)

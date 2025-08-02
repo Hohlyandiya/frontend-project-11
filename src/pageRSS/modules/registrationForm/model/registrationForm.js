@@ -10,16 +10,7 @@ import rendertitlePosts from '../view/renderTitlePosts'
 import renderTitleFeeds from '../view/renderTitleFeeds'
 import { addNewFeedAndPosts, listbuildsSubscriptions } from './postsAndFeeds'
 import { uniqueId, sortBy } from 'lodash'
-
-const schema = yup.object().shape({
-  url: yup.string().url(),
-})
-
-const checkValidForm = (fieldsForm) => {
-  return schema.validate(fieldsForm)
-    .then(() => true)
-    .catch(() => false)
-}
+import parseData from '../helpers/parseData'
 
 const defaultLanguage = 'ru'
 const i18nInstance = i18next.createInstance()
@@ -53,55 +44,42 @@ const feedbackStatus = {
   },
 }
 
-const addSubscription = (url) => {
-  const { subscriptionList } = defaultState
-  defaultState.subscriptionList = [...subscriptionList, url]
-}
+const schema = yup.object().shape({
+  url: yup.string().url(),
+})
 
-const checkUrl = (url) => {
-  return getDataRSSChanel(url)
-    .then((response) => {
-      const { subscriptionList } = defaultState
-      if (subscriptionList.includes(url)) {
-        const textContent = i18nInstance.t(feedbackStatus.errors.errRepeat)
-        renderError(textContent)
-        throw new Error()
-      } else if (response.code === 'ERR_NETWORK') {
-        const textContent = i18nInstance.t(feedbackStatus.errors.errNetwork)
-        renderError(textContent)
-        throw new Error()
-      } else if (response.data.status.http_code === 404) {
-        const textContent = i18nInstance.t(feedbackStatus.errors.errInvalidRSS)
-        renderError(textContent)
-        throw new Error()
-      }
-      const textContent = i18nInstance.t(feedbackStatus.statusValid.rssValid)
-      defaultState.fieldsForm.url = ''
-      addSubscription(url)
-      renderValid(textContent)
+const checkValidForm = (fieldsForm) => {
+  return schema.validate(fieldsForm)
+    .then(response => response.url)
+    .catch(() => {
+      throw new Error('errInvalid')
     })
-    .catch()
 }
 
 const state = onChange(defaultState.fieldsForm, () => {
-  checkValidForm(state)
-    .then((result) => {
-      if (result) {
-        checkUrl(state.url)
-          .then(() => {
-            const { subscriptionList } = defaultState
-            if (subscriptionList.length === 1) {
-              rendertitlePosts()
-              renderTitleFeeds()
-            }
-            listbuildsSubscriptions(defaultState.subscriptionList)
-              .then(() => addNewFeedAndPosts())
-            updatePosts(subscriptionList)
-          })
-          .catch()
-        return
+  Promise.all([checkValidForm(state), getDataRSSChanel(state.url)])
+    .then((values) => {
+      const [url, data] = values
+      const { subscriptionList } = defaultState
+      if (subscriptionList.includes(url)) {
+        throw new Error('errRepeat')
       }
-      renderError(i18nInstance.t(feedbackStatus.errors.errInvalid))
+      parseData(data)
+      const textContent = i18nInstance.t(feedbackStatus.statusValid.rssValid)
+      defaultState.fieldsForm.url = ''
+      defaultState.subscriptionList = [...subscriptionList, url]
+      renderValid(textContent)
+      if (defaultState.subscriptionList.length === 1) {
+        rendertitlePosts()
+        renderTitleFeeds()
+      }
+      listbuildsSubscriptions(defaultState.subscriptionList)
+        .then(() => addNewFeedAndPosts())
+      updatePosts(defaultState.subscriptionList)
+    })
+    .catch((error) => {
+      const textContent = i18nInstance.t(feedbackStatus.errors[error.message])
+      renderError(textContent)
     })
 })
 
