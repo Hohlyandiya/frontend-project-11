@@ -6,8 +6,7 @@ import renderError from '../view/renderError'
 import renderValid from '../view/renderValid'
 import getDataRSSChanel from '../api/getDataRSSChanel'
 import updatePosts from '../helpers/updatePosts'
-import rendertitlePosts from '../view/renderTitlePosts'
-import renderTitleFeeds from '../view/renderTitleFeeds'
+import renderTitle from '../view/renderTitle'
 import { addNewFeedAndPosts, listbuildsSubscriptions } from './postsAndFeeds'
 import { uniqueId, sortBy } from 'lodash'
 import parseData from '../helpers/parseData'
@@ -69,17 +68,17 @@ const state = onChange(defaultState.fieldsForm, () => {
       defaultState.subscriptionList = [...subscriptionList, url]
       renderValid(textContent)
       if (defaultState.subscriptionList.length === 1) {
-        rendertitlePosts()
-        renderTitleFeeds()
+        renderTitle('.feeds', 'Фиды')
+        renderTitle('.posts', 'Посты')
       }
       listbuildsSubscriptions(defaultState.subscriptionList)
         .then(() => addNewFeedAndPosts())
       updatePosts(defaultState.subscriptionList)
     })
     .catch((error) => {
-      state.url = ''
       const textContent = i18nInstance.t(feedbackStatus.errors[error.message])
       renderError(textContent)
+      defaultState.fieldsForm.url = ''
     })
 })
 
