@@ -2,12 +2,10 @@ import { uniqueId } from 'lodash'
 import { addSubscriptionsContents } from '../model/registrationForm'
 
 const getData = (element) => {
-  const beginContent = 9
-  const endContent = -3
   const title = element.querySelector('title')
   const description = element.querySelector('description')
-  const titleContent = title.innerHTML.slice(beginContent, endContent)
-  const descriptionContent = description.innerHTML.slice(beginContent, endContent)
+  const titleContent = title.textContent
+  const descriptionContent = description.textContent
   return {
     title: titleContent,
     description: descriptionContent,

@@ -66,7 +66,6 @@ const state = onChange(defaultState.fieldsForm, () => {
       }
       parseData(data)
       const textContent = i18nInstance.t(feedbackStatus.statusValid.rssValid)
-      defaultState.fieldsForm.url = ''
       defaultState.subscriptionList = [...subscriptionList, url]
       renderValid(textContent)
       if (defaultState.subscriptionList.length === 1) {
@@ -78,6 +77,7 @@ const state = onChange(defaultState.fieldsForm, () => {
       updatePosts(defaultState.subscriptionList)
     })
     .catch((error) => {
+      state.url = ''
       const textContent = i18nInstance.t(feedbackStatus.errors[error.message])
       renderError(textContent)
     })
