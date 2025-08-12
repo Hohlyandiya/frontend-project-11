@@ -50,4 +50,3 @@ const buildSubscrip = (response, url) => {
 }
 
 export default buildSubscrip
-

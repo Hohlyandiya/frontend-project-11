@@ -19,5 +19,6 @@ export default defineConfig([{
     '@stylistic/object-curly-spacing': ['error', 'always'],
     '@stylistic/quote-props': ['error', 'as-needed', { unnecessary: true }],
     '@stylistic/indent': ['error', 2],
+    '@stylistic/eol-last': ['error', 'never'],
   },
 }])

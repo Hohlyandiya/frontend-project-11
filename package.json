@@ -26,6 +26,7 @@
     "url": "https://github.com/Hohlyandiya/frontend-project-11/issues"
   },
   "homepage": "https://github.com/Hohlyandiya/frontend-project-11#readme",
+  "type": "module",
   "devDependencies": {
     "@playwright/test": "^1.53.2",
     "@stylistic/eslint-plugin": "^4.2.0",
