@@ -28,6 +28,4 @@ const renderPosts = (post) => {
   postController()
 }
 
-
-
 export default renderPosts
