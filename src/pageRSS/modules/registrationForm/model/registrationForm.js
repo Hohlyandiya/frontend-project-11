@@ -67,6 +67,7 @@ const state = onChange(defaultState.fieldsForm, () => {
       const textContent = i18nInstance.t(feedbackStatus.statusValid.rssValid)
       defaultState.subscriptionList = [...subscriptionList, url]
       renderValid(textContent)
+      defaultState.fieldsForm.url = ''
       if (defaultState.subscriptionList.length === 1) {
         renderTitle('.feeds', 'Фиды')
         renderTitle('.posts', 'Посты')
