@@ -4,7 +4,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/e745ebf45c05b8b87732/test_coverage)](https://codeclimate.com/github/Hohlyandiya/frontend-project-11/test_coverage)
 [![Lint-and-tests](https://github.com/Hohlyandiya/frontend-project-11/actions/workflows/github-actions-demo.yml/badge.svg?branch=main&event=push)](https://github.com/Hohlyandiya/frontend-project-11/actions/workflows/github-actions-demo.yml)
 
-# Игры разума 
+# RSS агрегатор 
 
 ## Содержание
 - [Описание](#описание)
